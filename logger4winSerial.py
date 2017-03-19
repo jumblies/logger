@@ -2,6 +2,13 @@ import serial
 import time
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+import logging
+
+# logging added to track exceptions.
+logging.basicConfig(filename='DHT.log',level=logging.DEBUG)
+logging.debug('This message should go to the log file')
+logging.info('So should this')
+logging.warning('And this, too')
 
 should_restart = True
 
@@ -67,8 +74,9 @@ while should_restart:
                     wks.update_acell('B'+str(datalist[int(x)][0]), datalist[int(x)][2]) # Temp entry
                     wks.update_acell('C'+str(datalist[int(x)][0]), datalist[int(x)][3]) # Hum entry  
                     wks.update_acell('D'+str(datalist[int(x)][0]), time.strftime('%Y%m%d')) #date string
-                
+                wks.update_acell('H2', curtime) # Time Last Updated
                 datalist =[]
+                
             n+=1
             if curtime == "00:00":
                 should_restart=True
